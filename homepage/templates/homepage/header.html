@@ -1,0 +1,50 @@
+
+{% load static %}
+
+
+   <header class="header">
+
+      <div class="header-1">
+         <div class="flex">
+            <div class="share">
+               <a href="#" class="fab fa-facebook-f"></a>
+               <a href="#" class="fab fa-twitter"></a>
+               <a href="#" class="fab fa-instagram"></a>
+               <a href="#" class="fab fa-linkedin"></a>
+            </div>
+            <p> new <a href="{% url 'login' %}">login</a> | <a href="{% url 'register' %}">register</a> </p>
+         </div>
+      </div>
+
+      <div class="header-2">
+         <div class="flex">
+            <!-- <a href="home.php" class="logo">Bookly.</a> -->
+            <a href="/" class="logo">BookHaven.</a>
+
+            <nav class="navbar">
+               <a href="/">home</a>
+               <a href="{% url 'about' %}">about</a>
+               <a href="#">shop</a>
+               <a href="#">contact</a>
+               <a href="#">orders</a>
+            </nav>
+
+            <div class="icons">
+               <div id="menu-btn" class="fas fa-bars"></div>
+               <!-- when clicking the search icon it should redirect to the search_page.php -->
+               <a href="#" class="fas fa-search"></a>
+               <div id="user-btn" class="fas fa-user"></div>
+               
+               <!-- when clicked it should go the cart page -->
+               <a href="#"> <i class="fas fa-shopping-cart"></i> <span>({{numberOfItemInCart}})</span> </a>
+            </div>
+
+            <div class="user-box">
+               <p>username : <span>{{request.user.username}}</span></p>
+               <p>email : <span>{{request.user.email}}</span></p>
+               <a href="{% url 'logout' %}" class="delete-btn">logout</a>
+            </div>
+         </div>
+      </div>
+
+   </header>

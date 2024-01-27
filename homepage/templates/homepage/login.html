@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>login</title>
+   <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+   <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet"  type="text/css">
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   
+</head>
+<body>
+   <!-- for the message alert -->
+<!-- link
+<?php
+if(isset($message)){
+   foreach($message as $message){
+      echo '
+      <div class="message">
+         <span>'.$message.'</span>
+         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+      </div>
+      ';
+   }
+}
+?> -->
+   
+<div class="form-container">
+
+   <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <h3>login now </h3>
+      <input type="text" name="username" placeholder="Enter your username" required class="box">
+      <input type="password" name="password" placeholder="Enter your password" required class="box">
+      <input type="submit" name="submit" value="login now" class="btn">
+      <p>don't have an account? <a href="{% url 'register' %}">sign up</a></p>
+   </form>
+
+</div>
+
+</body>
+</html>

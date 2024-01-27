@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CodePen - Side menu responsive Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    
+
+
+</head>
+
+<body>
+    <!-- partial:index.partial.html -->
+    <div class='dashboard'>
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="brand-logo">
+                    <i class="fas fa-anchor"></i> 
+                    <span>BRAND</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list"><a href="#" class="dashboard-nav-item"><i class="fas fa-home"></i>
+                    Home </a><a href="#" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i>
+                    dashboard
+                </a><a href="#" class="dashboard-nav-item"><i class="fas fa-file-upload"></i> Upload </a>
+                <div class='dashboard-nav-dropdown'><a href="#!"
+                        class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-photo-video"></i>
+                        Media </a>
+                    <div class='dashboard-nav-dropdown-menu'><a href="#" class="dashboard-nav-dropdown-item">All</a><a
+                            href="#" class="dashboard-nav-dropdown-item">Recent</a><a href="#"
+                            class="dashboard-nav-dropdown-item">Images</a><a href="#"
+                            class="dashboard-nav-dropdown-item">Video</a></div>
+                </div>
+                <div class='dashboard-nav-dropdown'><a href="#!"
+                        class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-users"></i> Users </a>
+                    <div class='dashboard-nav-dropdown-menu'><a href="#" class="dashboard-nav-dropdown-item">All</a><a
+                            href="#" class="dashboard-nav-dropdown-item">Subscribed</a><a href="#"
+                            class="dashboard-nav-dropdown-item">Non-subscribed</a><a href="#"
+                            class="dashboard-nav-dropdown-item">Banned</a><a href="#"
+                            class="dashboard-nav-dropdown-item">New</a></div>
+                </div>
+                <div class='dashboard-nav-dropdown'><a href="#!"
+                        class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-money-check-alt"></i>
+                        Payments </a>
+                    <div class='dashboard-nav-dropdown-menu'><a href="#" class="dashboard-nav-dropdown-item">All</a><a
+                            href="#" class="dashboard-nav-dropdown-item">Recent</a><a href="#"
+                            class="dashboard-nav-dropdown-item"> Projections</a>
+                    </div>
+                </div>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings </a><a href="#"
+                    class="dashboard-nav-item"><i class="fas fa-user"></i> Profile </a>
+                <div class="nav-item-divider"></div>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout </a>
+            </nav>
+        </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars">bro</i>
+                </a>
+                
+            </header>
+            <div class='dashboard-content'>
+                <div class='container'>
+                    <h1>this must shw now</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    h1
+    <!-- partial -->
+    
+    
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+
+</html>
