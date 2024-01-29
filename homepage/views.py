@@ -50,11 +50,30 @@ def logoutpage(request):
     messages.success(request, 'Logout successful.')
     return redirect('/login/')
 
+
+@login_required(login_url='/login/')
+def about (request):
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
+    context = {
+        'numberOfItemInCart':numberOfItemInCart
+    }
+    return render(request, 'homepage/about.html', context)
+
+
+def layout(request):
+    
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
+    context = {
+        'numberOfItemInCart':numberOfItemInCart
+    }
+    return render(request, 'homepage/layout.html', context)
+
+
 @login_required(login_url='/login/')
 def homepage(request):
     product_six_data_entry  = Product.objects.filter()[:6]
     count = product_six_data_entry.count()
-    numberOfItemInCart = Cart.objects.all().count()
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
     context = {
     
         'product_six_data_entry': product_six_data_entry,
@@ -87,18 +106,47 @@ def homepage(request):
     return render(request, 'homepage/homepage.html', context)
 
 @login_required(login_url='/login/')
-def about (request):
-    numberOfItemInCart = Cart.objects.all().count()    
-    context = {
-        'numberOfItemInCart':numberOfItemInCart
-    }
-    return render(request, 'homepage/about.html', context)
+def cart(request):
+    cart_data = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
+    numberOfItemInCart = cart_data.count()
+    grand_total = 0
 
-
-def layout(request):
+    # if it is a post request , the post request is just to update the number of quantity adn then redirect to the same page
     
-    numberOfItemInCart = Cart.objects.all().count()    
-    context = {
-        'numberOfItemInCart':numberOfItemInCart
-    }
-    return render(request, 'homepage/layout.html', context)
+    if request.method == 'POST':
+        update_cart = request.POST.get('update_cart')
+        cart_quantity = request.POST.get('cart_quantity')
+        product_name = request.POST.get('name')
+        print(f"this is the post request: {product_name}" )
+
+        if update_cart:
+            updateCartData = Cart.objects.get(name = product_name)
+            updateCartData.quantity = cart_quantity
+            updateCartData.save()
+            messages.success(request, 'cart quantity updated!')
+            return redirect ('/cart/')
+   
+       
+    if numberOfItemInCart > 0:
+        
+        for cart_item in cart_data:
+            grand_total += cart_item.price * cart_item.quantity
+            
+
+        context = {
+            'grand_total': grand_total,
+            'cart_data': cart_data,
+            'numberOfItemInCart': numberOfItemInCart
+            }
+        
+    else:
+        context = {
+            'grand_total': 0,
+            'sub_total': 0,  # Include sub_total in the context
+            'cart_data': cart_data,
+            'numberOfItemInCart': numberOfItemInCart
+        }
+        messages.info(request, 'Your cart is empty.')
+            
+    
+    return render(request, 'homepage/cart.html' , context)

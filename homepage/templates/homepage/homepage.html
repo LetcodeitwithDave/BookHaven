@@ -30,7 +30,7 @@
                   <input type="number" min="1" name="product_quantity" value="1" class="qty">
                   <input type="hidden" name="product_name" value="{{product.name}}">
                   <input type="hidden" name="product_price" value="{{product.price}}">
-                  <input type="hidden" name="product_image" value="{{product.image.url}}">
+                  <input type="hidden" name="product_image" value="{{product.image}}">
                   <input type="submit" value="add to cart" name="add_to_cart" class="btn">
                </form>
             {% endfor %}

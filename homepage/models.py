@@ -23,7 +23,7 @@ class Product(models.Model):
 
 class Cart(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique= True)
     price =  models.IntegerField()
     quantity =  models.IntegerField()
     image = models.ImageField(upload_to= 'images/')
@@ -32,4 +32,5 @@ class Cart(models.Model):
         return f"username - {self.name}, email = {self.price}, quantity = {self.quantity},  image = {self.image}"
 
 
-
+    def sum_total(self):
+        return self.quantity * self.price
