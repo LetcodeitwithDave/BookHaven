@@ -1,0 +1,44 @@
+
+
+{% extends 'homepage/layout.html' %}
+{% load static %}
+{% block body %}
+   
+
+
+   <div class="heading">
+      <h3>your orders</h3>
+      <p> <a href="/">home</a> / orders </p>
+   </div>
+
+   <section class="placed-orders">
+      <h1 style="color: ;"></h1>
+      <h1 class="title">placed orders</h1>
+
+      <div class="box-container">
+
+         
+         {% if order_query_count > 0 %}
+               {% for item in order_query %}
+                  <div class="box">
+                     <p> placed on : <span>{{item.placed_on|date:"M d, Y"}}</span> </p>
+                     <p> name : <span>{{item.name}}</span> </p>
+                     <p> number : <span>{{item.number}}</span> </p>
+                     <p> email : <span>{{item.email}}></span> </p>
+                     <p> address : <span>{{item.address}}</span> </p>
+                     <p> payment method : <span>{{item.method}}</span> </p>
+                     <p> your orders : <span> {{item.total_product}} </span> </p>
+                     <p> total price : <span>${{item.total_price}}/-</span> </p>
+                     <p> payment status : <span style="color:{% if item.payment_status == 'p' %}red;{% else %}green;{% endif %}">{{ item.get_payment_status_display }}</span> </p>
+                  </div>
+               {% endfor %}
+         {% else %}
+            <p  class="empty">no orders placed yet!</p>
+         {% endif %}
+         
+      </div>
+
+   </section>
+
+
+{% endblock %}

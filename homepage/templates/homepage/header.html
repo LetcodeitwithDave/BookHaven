@@ -12,7 +12,9 @@
                <a href="#" class="fab fa-instagram"></a>
                <a href="#" class="fab fa-linkedin"></a>
             </div>
-            <p> new <a href="{% url 'login' %}">login</a> | <a href="{% url 'register' %}">register</a> </p>
+            {% if user.not_authenticated %}
+               <p> new <a href="{% url 'login' %}">login</a> | <a href="{% url 'register' %}">register</a> </p>
+            {% endif %}
          </div>
       </div>
 
@@ -24,9 +26,9 @@
             <nav class="navbar">
                <a href="/">home</a>
                <a href="{% url 'about' %}">about</a>
-               <a href="#">shop</a>
+               <a href="{% url 'shop' %}">shop</a>
                <a href="#">contact</a>
-               <a href="#">orders</a>
+               <a href="{% url 'order' %}">orders</a>
             </nav>
 
             <div class="icons">

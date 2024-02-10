@@ -18,7 +18,7 @@
          {% for product in cart_data %}
             <div class="box">
                <!-- the click button to delete a product -->
-               <a href="#" class="fas fa-times" onclick="return confirm('delete this from cart?');"></a>
+               <a href="{% url 'deletecart' product.id %}" class="fas fa-times" onclick="return confirm('delete this from cart?');"></a>
                <img class="image" src="{{product.image.url}}" alt="">
                <div class="name">{{product.name}}</div>
                <div class="price">${{product.price}}/-</div>
@@ -39,16 +39,17 @@
    <!-- the grand_total > 1 is just like an if statement if the grand_totali is < 1 then that button gets disabled
       only clickeable when > 1 -->
    <div style="margin-top: 2rem; text-align:center;">
-      <a href="#" class="delete-btn {% if grand_total > 1 %} {% else %}disabled{% endif %}"
+      <a href="{% url 'deleteAll' %}" class="delete-btn {% if grand_total > 1 %} {% else %}disabled{% endif %}"
          onclick="return confirm('delete all from cart?');">delete all</a>
    </div>
 
    <div class="cart-total">
       <p>grand total : <span>${{grand_total}}/-</span></p>
       <div class="flex">
-         <a href="#" class="option-btn">continue shopping</a>
-         <a href="#" class="btn {% if grand_total > 1 %} {% else %}disabled{% endif %}">proceed to checkout</a>
+         <a href="{% url 'shop' %}" class="option-btn">continue shopping</a>
+         <a href="{% url 'checkout' %}" class="btn {% if grand_total > 1 %} {% else %}disabled{% endif %}">proceed to checkout</a>
       </div>
+      
    </div>
 
 </section>

@@ -12,6 +12,9 @@ urlpatterns = [
     path('register/', views.register, name = 'register'),
     path('about/', views.about, name = 'about'),
     path('cart/', views.cart, name = 'cart'),
+    path('deletecart/<int:id>', views.deletecart, name = 'deletecart'),
+    path('deleteAll', views.deleteAll, name = 'deleteAll'),
+    path('shop/', views.shop, name = 'shop'),
     # path('header/', views.headerPage, name = 'header'),
  
 ]

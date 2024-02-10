@@ -1,0 +1,37 @@
+
+{% extends 'homepage/layout.html' %}
+{%  block body %}
+
+   <div class="heading">
+      <h3>our shop</h3>
+      <p> <a href="/">home</a> / shop </p>
+   </div>
+
+   <section class="products">
+
+      <h1 class="title">latest products</h1>
+
+      <div class="box-container">
+         {% if count > 0 %}
+            {% for product in cartItem %}
+               <form action="{% url 'shop' %}" method="POST" class="box">
+                  {% csrf_token %}
+                  <img class="image" src="{{product.image.url}}" alt="">
+                  <div class="name">{{product.name}}</div>
+                  <div class="price">${{product.price}}/-</div>
+                  <input type="number" min="1" name="product_quantity" value="1" class="qty">
+                  <input type="hidden" name="product_name" value="{{product.name}}">
+                  <input type="hidden" name="product_price" value="{{product.price}}">
+                  <input type="hidden" name="product_image" value="{{product.image}}">
+                  <input type="submit" value="add to cart" name="add_to_cart" class="btn">
+               </form>
+            {% endfor %}      
+         {% else %}
+            <p class="empty">no products added yet!</p>
+         {% endif %}
+
+      </div>
+
+   </section>
+            
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'homepage/layout.html' %}
+{% load static %}
+{% block body %}
+   
+
+      <div class="heading">
+         <h3>checkout</h3>
+         <p> <a href="home.php">home</a> / checkout </p>
+      </div>
+
+      <section class="display-order">
+         {% if numberOfItemInCart > 0 %}
+            {% for items in total_cart %}
+               <p> {{items.name}} <span>(${{items.price}} /- x{{items.quantity}})</span>
+               </p>
+            {% endfor %}
+         {% else %}
+            <p class="empty">your cart is empty</p>
+         {% endif %} 
+         
+         <div class="grand-total"> grand total : <span>${{grand_total}}/-</span> </div>
+
+      </section>
+
+      <section class="checkout">
+
+         <form action="{% url 'checkout' %}" method="post">
+            {% csrf_token %}
+            <h3>place your order</h3>
+            <div class="flex">
+               <div class="inputBox">
+                  <span>your name :</span>
+                  <input type="text" name="name" required placeholder="enter your name">
+               </div>
+               <div class="inputBox">
+                  <span>your number :</span>
+                  <input type="number" name="number" required placeholder="enter your number">
+               </div>
+               <div class="inputBox">
+                  <span>your email :</span>
+                  <input type="email" name="email" required placeholder="enter your email">
+               </div>
+               <div class="inputBox">
+                  <span>payment method :</span>
+                  <select name="method">
+                     <option value="cash on delivery">cash on delivery</option>
+                     <option value="credit card">credit card</option>
+                     <option value="paypal">paypal</option>
+                     <option value="paytm">paytm</option>
+                  </select>
+               </div>
+               <div class="inputBox">
+                  <span>address line 01 :</span>
+                  <input type="number" min="0" name="flat" required placeholder="e.g. flat no.">
+               </div>
+               <div class="inputBox">
+                  <span>street:</span>
+                  <input type="text" name="street" required placeholder="e.g. street name">
+               </div>
+               <div class="inputBox">
+                  <span>city :</span>
+                  <input type="text" name="city" required placeholder="e.g. mumbai">
+               </div>
+               <div class="inputBox">
+                  <span>state :</span>
+                  <input type="text" name="state" required placeholder="e.g. maharashtra">
+               </div>
+               <div class="inputBox">
+                  <span>country :</span>
+                  <input type="text" name="country" required placeholder="e.g. india">
+               </div>
+               
+               
+            </div>
+            <input type="submit" value="order now" class="btn" name="order_btn">
+            
+         </form>
+
+      </section>
+   
+
+{% endblock body %}

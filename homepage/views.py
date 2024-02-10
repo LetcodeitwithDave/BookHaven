@@ -71,7 +71,7 @@ def layout(request):
 
 @login_required(login_url='/login/')
 def homepage(request):
-    product_six_data_entry  = Product.objects.filter()[:6]
+    product_six_data_entry  = Product.objects.filter().order_by('-created')[:6]
     count = product_six_data_entry.count()
     numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
     context = {
@@ -107,7 +107,7 @@ def homepage(request):
 
 @login_required(login_url='/login/')
 def cart(request):
-    cart_data = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
+    cart_data = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).order_by('-created')
     numberOfItemInCart = cart_data.count()
     grand_total = 0
 
@@ -150,3 +150,47 @@ def cart(request):
             
     
     return render(request, 'homepage/cart.html' , context)
+    
+@login_required(login_url='/login/')
+def shop(request):
+    cartItem  = Product.objects.filter().order_by('-created')
+    count = cartItem.count()
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
+    context = {
+    
+        'cartItem': cartItem,
+        'count': count,
+        'numberOfItemInCart':numberOfItemInCart
+    }
+    if request.method == 'POST':
+        addToCart = request.POST['add_to_cart']
+        if addToCart:
+            productName =  request.POST['product_name']
+            productPrice =  request.POST['product_price']
+            productImage =  request.POST['product_image']
+            productQuantity =  request.POST['product_quantity']
+            product_exist_in_cart = Cart.objects.filter(name = productName)
+            count_product_in_cart =  product_exist_in_cart.count()
+            if count_product_in_cart > 0:
+                messages.info(request, 'already added to cart!')
+            else:
+                Cart.objects.create(profile = 
+                                        Profile.objects.get(username = request.user.username),
+                                    name = productName, 
+                                    price = productPrice, 
+                                    quantity= productQuantity,
+                                    image= productImage)
+                messages.info(request, 'product added to cart!')
+                return redirect('/shop/')
+    return render(request, 'homepage/shop.html', context)
+
+
+def deletecart(request, id):
+    cart_item = Cart.objects.get(id = id)
+    cart_item.delete()
+    return redirect('/cart/')
+
+def deleteAll(request):
+    cart_item = Cart.objects.all()
+    cart_item.delete()
+    return redirect('/cart/')
