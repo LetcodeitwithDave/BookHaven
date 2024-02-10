@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from  django.contrib import messages
 from django.contrib.auth import authenticate, login
 from .forms import RegisterForm
-from .models import Profile, Cart, Product
+from .models import Profile, Cart, Product, Order
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-
+from .decorators import author_required
+from django.contrib.auth.models import Group, User
 # Create your views here.
 
 
@@ -22,21 +23,41 @@ def loginpage (request):
         user = authenticate(request, username=username, password = password)
         if user is not None:
             login(request, user)
+            if Group.objects.get(name = 'Author') and User.objects.get(username = request.user.username):
+                print('it worked david and the group is Author')                
+            else:
+                print('nothing is here for yo to see')
             return redirect('/')
         else:
             messages.warning(request, 'Either username or password is incorrect!') 
     return render (request, 'homepage/login.html')
+
 
 def register (request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
+            account_type = form.cleaned_data['account_type']
 
             Profile.objects.create(username=username, email=email)
+            user = User.objects.get(username = username)
+
+            if account_type == 'Author':
+                group, created = Group.objects.get_or_create(name= 'Author')
+                group = Group.objects.get(name = 'Author')
+                user.groups.add(group)
+                user.save()
+            else:
+                group, created = Group.objects.get_or_create(name= 'User')
+                group = Group.objects.get(name = 'User')
+                user.groups.add(group)
+                user.save()
+
+            print('account_type', group)
+
             messages.warning(request, f'Account created successfully for {username}.')
             return redirect('/login/')
         else:
@@ -70,6 +91,7 @@ def layout(request):
 
 
 @login_required(login_url='/login/')
+@author_required
 def homepage(request):
     product_six_data_entry  = Product.objects.filter().order_by('-created')[:6]
     count = product_six_data_entry.count()
@@ -88,7 +110,7 @@ def homepage(request):
             product_price =  request.POST['product_price']
             product_image =  request.POST['product_image']
             product_quantity =  request.POST['product_quantity']
-            if_product_exist_in_cart = Cart.objects.filter(name = product_name)
+            if_product_exist_in_cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username), name = product_name)
             cart_product_count =  if_product_exist_in_cart.count()
             if cart_product_count > 0:
                 messages.info(request, 'already added to cart!')
@@ -104,6 +126,80 @@ def homepage(request):
    
     
     return render(request, 'homepage/homepage.html', context)
+
+def checkout(request):
+    total_cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
+    cart_total_price = 0
+    grand_total = 0
+    
+    numberOfItemInCart = total_cart.count()
+
+    if request.method == 'POST':
+        order_btn = request.POST['order_btn']
+        name = request.POST['name']
+        number = request.POST['number']
+        email = request.POST['email']
+        method = request.POST['method']
+        flat = request.POST['flat']
+        street = request.POST['street']
+        city = request.POST['city']
+        state = request.POST['state']
+        country = request.POST['country']
+        new_address = f"flat no. {flat}, {street}, {city}, {state}, {country}"
+        if order_btn:
+            total_products = ""
+            cart_total_price = 0
+            for product in total_cart:
+                total_price = product.price * product.quantity
+                total_products += f"{product.name}({product.quantity}), "
+                cart_total_price += total_price
+
+                if total_price == 0:
+                    messages.info(request, 'Your cart is empty')
+                    return redirect('/cart/')
+
+            order = Order.objects.filter(
+                profile=Profile.objects.get(username=request.user.username),
+                total_product=total_products
+            )
+            order_count = order.count()
+
+            if order_count > 0:
+                messages.info(request, 'Order already placed!')
+            else:
+                Order.objects.create(
+                    profile=Profile.objects.get(username=request.user.username),
+                    name=name,
+                    number=number,
+                    email=email,
+                    method=method,
+                    address=new_address,
+                    total_product=total_products,
+                    total_price=cart_total_price,
+                )
+                messages.info(request, 'Order placed successfully!')
+                return redirect('/cartdelete/')
+        
+                
+    if numberOfItemInCart > 0:
+        for product in total_cart:
+            grand_total += product.price * product.quantity
+
+        context = {
+            'grand_total': grand_total,
+            'total_cart': total_cart,
+            'numberOfItemInCart': numberOfItemInCart
+            }
+        
+    else:
+        context = {
+            'grand_total': grand_total,
+            'total_cart': total_cart,
+            'numberOfItemInCart': numberOfItemInCart
+        }
+    
+    
+    return render(request, 'homepage/checkout.html', context)
 
 @login_required(login_url='/login/')
 def cart(request):
@@ -131,6 +227,7 @@ def cart(request):
         
         for cart_item in cart_data:
             grand_total += cart_item.price * cart_item.quantity
+            print(grand_total)
             
 
         context = {
@@ -169,7 +266,8 @@ def shop(request):
             productPrice =  request.POST['product_price']
             productImage =  request.POST['product_image']
             productQuantity =  request.POST['product_quantity']
-            product_exist_in_cart = Cart.objects.filter(name = productName)
+            product_exist_in_cart = Cart.objects.filter(profile = 
+                                        Profile.objects.get(username = request.user.username), name = productName)
             count_product_in_cart =  product_exist_in_cart.count()
             if count_product_in_cart > 0:
                 messages.info(request, 'already added to cart!')
@@ -194,3 +292,23 @@ def deleteAll(request):
     cart_item = Cart.objects.all()
     cart_item.delete()
     return redirect('/cart/')
+
+
+@login_required(login_url='/login/')
+def order(request):
+    order_query = Order.objects.filter(profile = Profile.objects.get(username = request.user.username))
+    order_query_count = order_query.count()
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
+    
+    context = {
+        'order_query': order_query,
+        'order_query_count': order_query_count,
+        'numberOfItemInCart':numberOfItemInCart
+    }
+    return render(request, 'homepage/orders.html', context)
+    
+
+def cartdelete(request):
+    cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
+    cart.delete()
+    return redirect('/order/')

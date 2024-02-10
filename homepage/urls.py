@@ -15,8 +15,9 @@ urlpatterns = [
     path('deletecart/<int:id>', views.deletecart, name = 'deletecart'),
     path('deleteAll', views.deleteAll, name = 'deleteAll'),
     path('shop/', views.shop, name = 'shop'),
-    # path('header/', views.headerPage, name = 'header'),
- 
+    path('checkout/', views.checkout, name = 'checkout'),
+    path('order/', views.order, name = 'order'),
+    path('cartdelete/', views.cartdelete, name = 'cartdelete'),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
