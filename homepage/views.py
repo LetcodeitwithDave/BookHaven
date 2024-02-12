@@ -5,7 +5,7 @@ from .forms import RegisterForm
 from .models import Profile, Cart, Product, Order
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .decorators import author_required
+from .decorators import author_required, user_required
 from django.contrib.auth.models import Group, User
 # Create your views here.
 
@@ -21,13 +21,14 @@ def loginpage (request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password = password)
-        if user is not None:
-            login(request, user)
-            if Group.objects.get(name = 'Author') and User.objects.get(username = request.user.username):
-                print('it worked david and the group is Author')                
-            else:
-                print('nothing is here for yo to see')
-            return redirect('/')
+        if user is not None:              
+            login(request, user)  
+            
+            if request.user.groups.filter(name='Author'):
+                return redirect('/admin_page/')
+            elif request.user.groups.filter(name='User'):
+                return redirect('/')
+          
         else:
             messages.warning(request, 'Either username or password is incorrect!') 
     return render (request, 'homepage/login.html')
@@ -71,7 +72,7 @@ def logoutpage(request):
     messages.success(request, 'Logout successful.')
     return redirect('/login/')
 
-
+@user_required
 @login_required(login_url='/login/')
 def about (request):
     numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
@@ -89,9 +90,8 @@ def layout(request):
     }
     return render(request, 'homepage/layout.html', context)
 
-
+@user_required
 @login_required(login_url='/login/')
-@author_required
 def homepage(request):
     product_six_data_entry  = Product.objects.filter().order_by('-created')[:6]
     count = product_six_data_entry.count()
@@ -127,6 +127,7 @@ def homepage(request):
     
     return render(request, 'homepage/homepage.html', context)
 
+@user_required
 def checkout(request):
     total_cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
     cart_total_price = 0
@@ -201,6 +202,7 @@ def checkout(request):
     
     return render(request, 'homepage/checkout.html', context)
 
+@user_required
 @login_required(login_url='/login/')
 def cart(request):
     cart_data = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).order_by('-created')
@@ -248,6 +250,7 @@ def cart(request):
     
     return render(request, 'homepage/cart.html' , context)
     
+@user_required
 @login_required(login_url='/login/')
 def shop(request):
     cartItem  = Product.objects.filter().order_by('-created')
@@ -282,18 +285,19 @@ def shop(request):
                 return redirect('/shop/')
     return render(request, 'homepage/shop.html', context)
 
-
+@user_required
 def deletecart(request, id):
     cart_item = Cart.objects.get(id = id)
     cart_item.delete()
     return redirect('/cart/')
 
+@user_required
 def deleteAll(request):
     cart_item = Cart.objects.all()
     cart_item.delete()
     return redirect('/cart/')
 
-
+@user_required
 @login_required(login_url='/login/')
 def order(request):
     order_query = Order.objects.filter(profile = Profile.objects.get(username = request.user.username))
@@ -307,7 +311,7 @@ def order(request):
     }
     return render(request, 'homepage/orders.html', context)
     
-
+@user_required
 def cartdelete(request):
     cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
     cart.delete()

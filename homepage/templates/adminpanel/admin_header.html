@@ -1,0 +1,30 @@
+{% load static %}
+<header class="header">
+
+   <div class="flex">
+
+      <a href="#" class="logo">Admin<span>Panel</span></a>
+
+      <nav class="navbar">
+         <a href="{% url 'admin page' %}">home</a>
+         <a href="#">products</a>
+         <a href="#">orders</a>
+         <a href="#">users</a>
+         <a href="#">messages</a>
+      </nav>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+      </div>
+
+      <div class="account-box">
+         <p>username : <span>{{request.user.username}}</span></p>
+         <p>email : <span>{{request.user.email}}</span></p>
+         <a href="{% url 'logout' %}" class="delete-btn">logout</a>
+         <div>new <a href="#">login</a> | <a href="#">register</a></div>
+      </div>
+
+   </div>
+
+</header>
