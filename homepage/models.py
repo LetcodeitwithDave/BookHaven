@@ -40,7 +40,7 @@ class Cart(models.Model):
 class Order(models.Model):
     ORDER_STATUS_CHOICE = [
         ('p', 'pending'),
-        ('c','completed'),
+        ('d','dilivered'),
     ]
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length= 230)
