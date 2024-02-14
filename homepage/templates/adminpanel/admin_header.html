@@ -3,12 +3,12 @@
 
    <div class="flex">
 
-      <a href="#" class="logo">Admin<span>Panel</span></a>
+      <a href="{% url 'admin page' %}" class="logo">Admin<span>Panel</span></a>
 
       <nav class="navbar">
          <a href="{% url 'admin page' %}">home</a>
          <a href="#">products</a>
-         <a href="#">orders</a>
+         <a href="{% url 'admin order' %}">orders</a>
          <a href="#">users</a>
          <a href="#">messages</a>
       </nav>
