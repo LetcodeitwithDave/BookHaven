@@ -40,7 +40,7 @@ class Cart(models.Model):
 class Order(models.Model):
     ORDER_STATUS_CHOICE = [
         ('p', 'pending'),
-        ('d','dilivered'),
+        ('c','completed'),
     ]
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length= 230)
@@ -54,7 +54,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICE, default = 'p')
     
     def __str__(self):
-        return f"[name - {self.name}, number = {self.number}, address = {self.address},  total_product = {self.total_product}, total_price = {self.total_price}, payment_status = {self.payment_status}]"
+        return f"[profile - {self.profile.username}, name - {self.name}, number = {self.number}, address = {self.address},  total_product = {self.total_product}, total_price = {self.total_price}, payment_status = {self.payment_status}]"
 
 
 class Message(models.Model):
