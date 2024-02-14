@@ -1,0 +1,64 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>orders</title>
+   <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+
+
+</head>
+<body>
+   
+{% include 'adminpanel/admin_header.html' %}
+
+<section class="orders">
+   
+   <h1 class="title">placed orders</h1>
+   <div class="box-container">
+      
+      {% if count_order > 0 %}
+            {% for order in select_order %}
+               <div class="box">
+                  <!-- <p> user id : <span><?php echo $fetch_orders['user_id']; ?></span> </p> -->
+                  <p> placed on : <span>{{order.placed_on}}</span> </p>
+                  <p> name : <span>{{order.name}}</span> </p>
+                  <p> number : <span>{{order.number}}</span> </p>
+                  <p> email : <span>{{order.email}}</span> </p>
+                  <p> address : <span>{{order.address}}</span> </p>
+                  <p> total products : <span>{{order.total_product}}</span> </p>
+                  <p> total price : <span>${{order.total_price}}/-</span> </p>
+                  <p> payment method : <span>{{order.method}}</span> </p>
+                  <form action="{% url 'admin order' %}" method="post">
+                     {% csrf_token %}
+                     <input type="hidden" name="order_id" value="{{order.id}}">
+                     <input type="hidden" name="name" value="{{order.name}}">
+                     <select name="update_payment">
+                        <option value="" selected disabled><?php echo $fetch_orders['payment_status']; ?></option>
+                        <option value="pending">pending</option>
+                        <option value="completed">completed</option>
+                     </select>
+                     <input type="submit" value="update" name="update_order" class="option-btn">
+                     <a href="{% url 'deleteorder' order.id %}" onclick="return confirm('delete this order?');" class="delete-btn">delete</a>
+                  </form>
+               </div>
+            {% endfor %}
+
+      {% else %}
+         <p class="empty">no orders placed yet!</p>
+      {% endif %}
+      
+   </div>
+
+</section>
+
+
+<!-- custom admin js file link  -->
+<script src="{% static 'js/admin_script.js' %}"></script>
+
+</body>
+</html>
