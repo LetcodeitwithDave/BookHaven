@@ -37,9 +37,10 @@
                      {% csrf_token %}
                      <input type="hidden" name="order_id" value="{{order.id}}">
                      <input type="hidden" name="name" value="{{order.name}}">
+                     
                      <select name="update_payment">
-                        <option value="" selected disabled><?php echo $fetch_orders['payment_status']; ?></option>
-                        <option value="pending">pending</option>
+                        <option value="" selected disabled>{{order.payment_status}}</option>
+                        <option value="p">pending</option>
                         <option value="completed">completed</option>
                      </select>
                      <input type="submit" value="update" name="update_order" class="option-btn">
