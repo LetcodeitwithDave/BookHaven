@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from  django.contrib import messages
 from django.contrib.auth import authenticate, login
 from .forms import RegisterForm
-from .models import Profile, Cart, Product, Order
+from .models import Profile, Cart, Product, Order, Message
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .decorators import author_required, user_required
@@ -23,9 +23,9 @@ def loginpage (request):
         user = authenticate(request, username=username, password = password)
         if user is not None:
             login(request, user)
-            if Group.objects.filter(name = 'Author') :
+            if user.groups.filter(name = 'Author') :
                 return redirect('/admin_page/')                
-            elif Group.objects.filter(name = 'User'):
+            elif user.groups.filter(name = 'User'):
                 return redirect('/')
         else:
             messages.warning(request, 'Either username or password is incorrect!') 
@@ -110,8 +110,8 @@ def homepage(request):
             product_image =  request.POST['product_image']
             product_quantity =  request.POST['product_quantity']
             if_product_exist_in_cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username), name = product_name)
-            cart_product_count =  if_product_exist_in_cart.count()
-            if cart_product_count > 0:
+            cart_product_count =  if_product_exist_in_cart.exists()
+            if cart_product_count :
                 messages.info(request, 'already added to cart!')
             else:
                 Cart.objects.create(profile = 
@@ -162,9 +162,9 @@ def checkout(request):
                 profile=Profile.objects.get(username=request.user.username),
                 total_product=total_products
             )
-            order_count = order.count()
+            order_exist = order.exists()
 
-            if order_count > 0:
+            if order_exist:
                 messages.info(request, 'Order already placed!')
             else:
                 Order.objects.create(
@@ -214,7 +214,6 @@ def cart(request):
         update_cart = request.POST.get('update_cart')
         cart_quantity = request.POST.get('cart_quantity')
         product_name = request.POST.get('name')
-        print(f"this is the post request: {product_name}" )
 
         if update_cart:
             updateCartData = Cart.objects.get(name = product_name)
@@ -315,3 +314,23 @@ def cartdelete(request):
     cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
     cart.delete()
     return redirect('/order/')
+
+
+def contact(request):
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
+    context = {
+        'numberOfItemInCart':numberOfItemInCart
+    }
+    if request.method == 'POST':
+        send = request.POST['send']
+        name = request.POST['name']
+        email = request.POST['email']
+        number = request.POST['number']
+        message = request.POST['message']
+        
+        if send:
+            Message.objects.create(name = name, email = email, number = number, message = message )
+            messages.info(request, 'message sent successfully!')
+
+        
+    return render (request, 'homepage/contact.html', context)
