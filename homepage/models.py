@@ -61,7 +61,7 @@ class Message(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     number = models.IntegerField()
-    message = models.CharField(max_length=1000)
+    message = models.TextField(max_length=1000)
     
     def __str__(self):
         return f"[name = {self.name}, email = {self.email}, number = {self.number},  message = {self.message}]"
