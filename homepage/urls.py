@@ -18,6 +18,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name = 'checkout'),
     path('order/', views.order, name = 'order'),
     path('cartdelete/', views.cartdelete, name = 'cartdelete'),
+    path('contact/', views.contact, name = 'contact'),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
