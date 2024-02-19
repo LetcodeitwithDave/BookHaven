@@ -90,6 +90,50 @@ def deleteorder(request, id):
     order_item.delete()
     return redirect('/admin_order/')
 
+def admin_product(request):
+    select_products = Product.objects.all()
+    select_products_count = select_products.count()
+
+    if request.method == 'POST':
+        if 'image' in request.FILES:
+            # product CRUD
+            name = request.POST.get('name')
+            price = request.POST.get('price')
+            image = request.FILES.get('image')
+
+            product_query = Product.objects.filter(name=name)
+            product_query_count = product_query.count()
+            
+            if product_query_count > 0:
+                messages.info(request, 'Product name already added')
+            else:
+                Product.objects.create(name=name, price=price, image=image)
+
+        # Edit product based on its id
+        if 'update_product' in request.POST:
+            product_id = request.POST.get('update_p_id')
+            update_name = request.POST.get('update_name')
+            update_price = request.POST.get('update_price')
+            update_image = request.FILES.get('update_image')
+
+            each_product = Product.objects.get(id=product_id)
+            each_product.name = update_name
+            each_product.price = update_price
+            if update_image:
+                each_product.image = update_image
+            each_product.save()
+            return redirect('/admin_product/')
+
+    context = {
+        'select_products_count': select_products_count,
+        'select_products': select_products,
+    }
+
+    return render(request, 'adminpanel/admin_products.html', context)
 
 
-
+def deleteproduct(request, id):
+    cart_item = Product.objects.get(id = id)
+    cart_item.delete()
+    return redirect('/admin_product/')
+    
