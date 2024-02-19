@@ -15,7 +15,7 @@ class Profile(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     price =  models.IntegerField()
-    quantity =  models.IntegerField(null = True)
+    
     image = models.ImageField(upload_to= 'images/')
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank = True)
     created = models.DateTimeField(auto_now_add=True, null = True)
