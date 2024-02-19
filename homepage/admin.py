@@ -5,7 +5,7 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ["profile", "name", "price", "quantity", "image"]
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["profile", "name", "price", "quantity", "image"]
+    list_display = ["profile", "name", "price", "image"]
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["profile", "name", "number", "email", "method", "address", "total_product", "total_price", "placed_on","payment_status"]
