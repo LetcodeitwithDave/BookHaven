@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>products</title>
+   <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+
+
+</head>
+<body>
+   
+ 
+ 
+ 
+{% include "adminpanel/admin_header.html" %}
+
+<!-- product CRUD section starts  -->
+
+<section class="add-products">
+
+   <h1 class="title">shop products</h1>
+
+   <form action="{% url "admin products" %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h3>add product</h3>
+      <input type="text" name="name" class="box" placeholder="enter product name" required>
+      <input type="number" min="0" name="price" class="box" placeholder="enter product price" required>
+      <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box" required>
+      <input type="submit" value="add product" name="add_product" class="btn">
+   </form>
+
+</section>
+
+<!-- product CRUD section ends -->
+
+
+
+<!-- show products  -->
+
+<section class="show-products">
+
+   <div class="box-container">
+      {% if select_products_count > 0 %} 
+
+         {% for item in select_products %}
+            <div class="box">
+               <img src="item.image.url" alt="product image">
+               <div class="name">{{item.name}}</div>
+               <div class="price">${{item.price}}/-</div>
+               <a href="admin_products.php?update=<?php echo $fetch_products['id']; ?>" class="option-btn">update</a>
+               <a href="{% url "deleteproduct" item.id %}" class="delete-btn" onclick="return confirm('delete this product?');">delete</a>
+            </div> 
+         {% endfor %}
+          
+      {% else %}
+         <p class="empty">no products added yet!</p>
+      {% endif %}
+   </div>
+
+</section>
+
+<section class="edit-product-form">
+
+   {% if each_product_count > 0 %} 
+      {% for product in each_product %}
+         <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="update_p_id" value="{{product.id}}">
+            <input type="hidden" name="update_old_image" value="{{product.image}}">
+            <img src="{{product.image}}" alt="product image">
+            <input type="text" name="update_name" value="{{product.name}}" class="box" required placeholder="enter product name">
+            <input type="number" name="update_price" value="{{product.name}}" min="0" class="box" required placeholder="enter product price">
+            <input type="file" class="box" name="update_image" accept="image/jpg, image/jpeg, image/png">
+            <input type="submit" value="update" name="update_product" class="btn">
+            <input type="reset" value="cancel" id="close-update" class="option-btn">
+         </form>
+         
+      {% endfor %}
+
+   {% else %}
+      <script>document.querySelector(".edit-product-form").style.display = "none";</script>
+   {% endif %}
+   
+
+</section>
+
+<!-- custom admin js file link  -->
+<script src="{% static 'js/admin_script.js' %}"></script>
+
+</body>
+</html>
+
+
