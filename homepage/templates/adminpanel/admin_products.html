@@ -49,7 +49,7 @@
 
          {% for item in select_products %}
             <div class="box">
-               <img src="item.image.url" alt="product image">
+               <img src="{{item.image.url}}" alt="product image">
                <div class="name">{{item.name}}</div>
                <div class="price">${{item.price}}/-</div>
                <a href="admin_products.php?update=<?php echo $fetch_products['id']; ?>" class="option-btn">update</a>
