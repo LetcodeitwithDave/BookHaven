@@ -14,8 +14,14 @@
 </head>
 <body>
    
- 
- 
+{% if messages %}
+   {% for message in messages %}
+      <div class="message">
+         <span>{{message}}</span>
+         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+      </div>
+   {% endfor %}
+{% endif %}
  
 {% include "adminpanel/admin_header.html" %}
 
@@ -49,7 +55,7 @@
 
          {% for item in select_products %}
             <div class="box">
-               <img src="item.image.url" alt="product image">
+               <img src="{{item.image.url}}" alt="product image">
                <div class="name">{{item.name}}</div>
                <div class="price">${{item.price}}/-</div>
                <a href="admin_products.php?update=<?php echo $fetch_products['id']; ?>" class="option-btn">update</a>
