@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>messages</title>
+   <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="{% static 'css/admin_style.css' %}">
+
+</head>
+<body>
+   
+{% include "adminpanel/admin_header.html" %}
+
+<section class="messages">
+
+   <h1 class="title"> messages </h1>
+
+   <div class="box-container">
+   
+   {% if select_message_count > 0 %}
+      {% for text in select_message  %}
+
+         <div class="box">
+            <p> user id : <span>{{text.id}}</span> </p>
+            <p> name : <span> {{text.name}} </span> </p>
+            <p> number : <span> {{text.number}} </span> </p>
+            <p> email : <span>{{text.email}}</span></p>
+            <p> message : <span>{{text.message}}</span> </p>
+            <a href="{% url "deletecontact" text.id %}" onclick="return confirm('delete this message?');" class="delete-btn">delete message</a>
+         </div>
+      
+      {% endfor %}
+   {% else %}
+      <p class="empty">you have no messages!</p>
+   {% endif %}
+   
+   
+   </div>
+
+</section>
+
+
+<!-- custom admin js file link  -->
+<script src="{% static 'js/admin_script.js' %}"></script>
+
+</body>
+</html>
