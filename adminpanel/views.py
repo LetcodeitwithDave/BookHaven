@@ -136,4 +136,37 @@ def deleteproduct(request, id):
     cart_item = Product.objects.get(id = id)
     cart_item.delete()
     return redirect('/admin_product/')
+     
+
+def admin_users(request):
+    user_groups =  request.user.groups.values_list('name', flat=True)
+    author_type = Group.objects.get(name = 'Author')
+    if 'Author' in user_groups:
+        author_profile = Profile.objects.get(username=request.user.username)
+        
+
     
+        context = {
+            'author_type' : author_type,
+            'author_profile' : author_profile,
+        }
+    return render(request, 'adminpanel/admin_users.html',context)
+
+
+def admin_contact(request):
+
+    select_message = Message.objects.all()
+    select_message_count = select_message.count()
+
+    context = {
+        'select_message_count' : select_message_count,
+        'select_message' : select_message,
+
+    }
+    return render(request, 'adminpanel/admin_contacts.html', context)
+
+
+def contact_delete(request, id):
+    message = Message.objects.get(id = id)
+    message.delete()
+    return redirect('/admin_contact/')
