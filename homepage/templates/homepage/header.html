@@ -7,10 +7,8 @@
       <div class="header-1">
          <div class="flex">
             <div class="share">
-               <a href="#" class="fab fa-facebook-f"></a>
-               <a href="#" class="fab fa-twitter"></a>
-               <a href="#" class="fab fa-instagram"></a>
-               <a href="#" class="fab fa-linkedin"></a>
+               <a href="https://twitter.com/Tech_Dave4?t=z5C7hQFuyPZY0ONZ3VHDUA&s=09/" class="fab fa-twitter"></a>
+               <a href="https://www.linkedin.com/in/david-solola-4773a1291/" class="fab fa-linkedin"></a>
             </div>
             {% if user.not_authenticated %}
                <p> new <a href="{% url 'login' %}">login</a> | <a href="{% url 'register' %}">register</a> </p>
@@ -34,7 +32,7 @@
             <div class="icons">
                <div id="menu-btn" class="fas fa-bars"></div>
                <!-- when clicking the search icon it should redirect to the search_page.php -->
-               <a href="#" class="fas fa-search"></a>
+               <a href="{% url "search" %}" class="fas fa-search"></a>
                <div id="user-btn" class="fas fa-user"></div>
                
                <!-- when clicked it should go the cart page -->
