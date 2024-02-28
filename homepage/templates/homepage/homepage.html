@@ -7,7 +7,7 @@
 
       <div class="content">
          <h3>Hand Picked Book to your door.</h3>
-         <p>Embark on a journey Through the pages: Where Every Book Holds a New Adventures
+         <p>Embark on a journey Through the pages: Where Every Book Holds a New Adventures.
          </p>
          <a href="{% url 'about' %}" class="white-btn">discover more</a>
       </div>
@@ -35,7 +35,7 @@
                </form>
             {% endfor %}
          {% else %}
-            <p class="empty">no products added yet!</p>
+            <p class="empty">{{submit}}</p>
          {% endif %}
 
       </div>
@@ -56,8 +56,9 @@
 
          <div class="content">
             <h3>about us</h3>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quos enim minima ipsa dicta officia
-               corporis ratione saepe sed adipisci?</p>
+            <p>At BookHaven, our passion for books is boundless. Founded with a love for literature, 
+               we strive to curate a haven for book enthusiasts. From bestsellers to hidden gems, we offer a diverse collection to inspire every reader. 
+               Join us in celebrating the joy of storytelling and embark on a literary journey with BookHaven.</p>
             <!-- link to about -->
             <a href="{% url 'about' %}" class="btn" alt="#">read more</a>
          </div>
@@ -70,8 +71,7 @@
 
       <div class="content">
          <h3>have any questions?</h3>
-         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque cumque exercitationem repellendus, amet
-            ullam voluptatibus?</p>
+         <p>Questions or iniquiries? Reach out to us at BookHaven! our team is here to assist you with any queries you may have.</p>
          <a href="#" class="white-btn">contact us</a>
       </div>
 
