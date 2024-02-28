@@ -1,0 +1,59 @@
+
+
+   
+{% extends "homepage/layout.html" %}
+{% load static %}
+{% block body %}
+
+
+
+   <div class="heading">
+      <h3>search page</h3>
+      <p> <a href="/">home</a> / search </p>
+   </div>
+
+   <section class="search-form">
+      <form action="{% url "search" %}" method="post">
+         {% csrf_token %}
+         <input type="text" name="search" placeholder="search products..." class="box">
+         <input type="submit" name="submit" value="search" class="btn">
+      </form>
+   </section>
+
+   <section class="products" style="padding-top: 0;">
+
+      <div class="box-container">
+         {% if search_item %}
+            {% if search_result%}
+               {% for product in search_result  %}
+                  <form action="{% url "search" %}" method="post" class="box">
+                     {% csrf_token %}
+                     <img src="{{product.image.url}}" alt=product image"" class="image">
+                     <div class="name">{{product.name}}</div>
+                     <div class="price">${{product.price}}/-</div>
+                     <input type="number"  class="qty" name="product_quantity" min="1" value="1">
+                     <input type="hidden" name="product_name" value="{{product.name}}">
+                     <input type="hidden" name="product_price" value="{{product.price}}">
+                     <input type="hidden" name="product_image" value="{{product.image}}">
+                     <input type="submit" class="btn" value="add to cart" name="add_to_cart">
+                  </form>
+               {% endfor %}
+            {% else %}
+               <p class="empty">no result found!</p>
+            {% endif %}
+
+         
+         {% else %}
+            <p class="empty">search something!</p>
+         {% endif %}
+         
+      </div>
+   
+
+   </section>
+
+{% endblock body %}
+
+
+
+
