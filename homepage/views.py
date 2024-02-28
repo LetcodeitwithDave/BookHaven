@@ -334,3 +334,50 @@ def contact(request):
 
         
     return render (request, 'homepage/contact.html', context)
+
+
+     
+def search_page(request):
+
+    numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
+    context = {
+            'numberOfItemInCart': numberOfItemInCart
+        }
+    if request.method == 'POST':
+        if 'submit' in request.POST:
+            search_item  =  request.POST['search']
+
+            search_result = Product.objects.filter(name__contains= search_item )    
+            search_result_count = search_result.count()
+
+        if 'add_to_cart' in request.POST:
+            product_name =  request.POST['product_name']
+            product_price =  request.POST['product_price']
+            product_image =  request.POST['product_image']
+            product_quantity =  request.POST['product_quantity']
+            if_product_exist_in_cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username), name = product_name)
+            cart_product_count =  if_product_exist_in_cart.exists()
+            if cart_product_count :
+                messages.info(request, 'already added to cart!')
+            else:
+                Cart.objects.create(profile = 
+                                        Profile.objects.get(username = request.user.username),
+                                    name = product_name, 
+                                    price = product_price, 
+                                    quantity= product_quantity,
+                                    image= product_image)
+                messages.info(request, 'product added to cart!')
+                return redirect('/search/')
+
+
+        context = { 
+            'search_item':search_item,
+            'search_result': search_result,
+            'search_result_count': search_result_count,
+            'numberOfItemInCart':numberOfItemInCart
+            }
+     
+    
+
+    return render(request, 'homepage/search_page.html', context)
+
