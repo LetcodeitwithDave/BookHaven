@@ -19,6 +19,7 @@ urlpatterns = [
     path('order/', views.order, name = 'order'),
     path('cartdelete/', views.cartdelete, name = 'cartdelete'),
     path('contact/', views.contact, name = 'contact'),
+    path('search/', views.search_page, name = 'search'),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
