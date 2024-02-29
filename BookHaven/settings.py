@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-fhmz_e(9ynmpmk**f0#h_hg*hd(6g2m2%0#lcsgzq8t7$4^p%s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 sys.dont_write_bytecode = True
 
@@ -91,33 +91,33 @@ WSGI_APPLICATION = 'BookHaven.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': '64d265EdBB*363G1gf-6-Dga4fBedegd',
-#         'HOST': 'monorail.proxy.rlwy.net',
-#         'PORT': '32098',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
 
 
-
-
-'''
 DATABASES = {
-    'default' : dj_database_url.parse(env('DATABASE_URL'))   
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '64d265EdBB*363G1gf-6-Dga4fBedegd',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'PORT': '32098',
+    }
 }
-'''
+
+
+
+
+
+# DATABASES = {
+#     'default' : dj_database_url.parse(env('DATABASE_URL'))   
+# }
+
 
 
 
@@ -156,7 +156,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS =[BASE_DIR/ "static"]
+
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
