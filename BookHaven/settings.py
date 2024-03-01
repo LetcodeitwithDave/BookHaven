@@ -15,6 +15,7 @@ import os
 import sys
 import dj_database_url
 import environ
+from dotenv import load_dotenv
 
 env = environ.Env()
 
@@ -101,14 +102,15 @@ WSGI_APPLICATION = 'BookHaven.wsgi.application'
 # }
 
 
+load_dotenv()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '64d265EdBB*363G1gf-6-Dga4fBedegd',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '32098',
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
