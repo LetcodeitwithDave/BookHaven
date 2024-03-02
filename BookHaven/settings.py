@@ -17,6 +17,10 @@ import dj_database_url
 import environ
 from dotenv import load_dotenv
 
+env  = environ.Env()
+environ.Env.read_env()
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,9 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 sys.dont_write_bytecode = True
 
@@ -102,24 +104,24 @@ WSGI_APPLICATION = 'BookHaven.wsgi.application'
 
 
 load_dotenv()
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-    }
-}
-
-
-
-
-
 # DATABASES = {
-#     'default' : dj_database_url.parse(env('DATABASE_URL'))   
+#     'default': {
+#         'ENGINE': os.getenv('DB_ENGINE'),
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#     }
 # }
+
+
+
+
+
+DATABASES = {
+    'default' : dj_database_url.parse(env('DATABASE_URL'))   
+}
 
 
 
