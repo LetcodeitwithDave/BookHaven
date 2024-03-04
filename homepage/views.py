@@ -17,7 +17,10 @@ def page (request):
     return render (request, 'homepage/page.html')
 
 def loginpage (request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    elif request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password = password)
@@ -349,6 +352,12 @@ def search_page(request):
 
             search_result = Product.objects.filter(name__contains= search_item )    
             search_result_count = search_result.count()
+            context = {
+                'search_item':search_item,
+                'search_result': search_result,
+                'search_result_count': search_result_count,
+                'numberOfItemInCart':numberOfItemInCart
+            }
 
         if 'add_to_cart' in request.POST:
             product_name =  request.POST['product_name']
@@ -370,12 +379,7 @@ def search_page(request):
                 return redirect('/search/')
 
 
-        context = { 
-            'search_item':search_item,
-            'search_result': search_result,
-            'search_result_count': search_result_count,
-            'numberOfItemInCart':numberOfItemInCart
-            }
+        
      
     
 
