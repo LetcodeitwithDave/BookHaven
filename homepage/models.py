@@ -60,8 +60,9 @@ class Order(models.Model):
 class Message(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    number = models.IntegerField()
+    number = models.CharField(max_length=255)
     message = models.TextField(max_length=1000)
+    created = models.DateTimeField(auto_now_add=True, null = True)
     
     def __str__(self):
         return f"[name = {self.name}, email = {self.email}, number = {self.number},  message = {self.message}]"
