@@ -155,7 +155,7 @@ def admin_users(request):
 
 def admin_contact(request):
 
-    select_message = Message.objects.all()
+    select_message = Message.objects.filter().order_by('-created')
     select_message_count = select_message.count()
 
     context = {
