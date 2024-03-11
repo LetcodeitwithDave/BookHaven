@@ -73,8 +73,9 @@ def logoutpage(request):
     messages.success(request, 'Logout successful.')
     return redirect('/login/')
 
-@user_required
+
 @login_required(login_url='/login/')
+@user_required
 def about (request):
     numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
     context = {
@@ -204,8 +205,9 @@ def checkout(request):
     
     return render(request, 'homepage/checkout.html', context)
 
-@user_required
 @login_required(login_url='/login/')
+@user_required
+
 def cart(request):
     cart_data = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).order_by('-created')
     numberOfItemInCart = cart_data.count()
@@ -298,8 +300,9 @@ def deleteAll(request):
     cart_item.delete()
     return redirect('/cart/')
 
-@user_required
+
 @login_required(login_url='/login/')
+@user_required
 def order(request):
     order_query = Order.objects.filter(profile = Profile.objects.get(username = request.user.username))
     order_query_count = order_query.count()
@@ -312,13 +315,14 @@ def order(request):
     }
     return render(request, 'homepage/orders.html', context)
     
-@user_required
+
 def cartdelete(request):
     cart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username))
     cart.delete()
     return redirect('/order/')
 
-
+@login_required(login_url='/login/')
+@user_required
 def contact(request):
     numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()    
     context = {
@@ -339,7 +343,8 @@ def contact(request):
     return render (request, 'homepage/contact.html', context)
 
 
-     
+@login_required(login_url='/login/')
+@user_required
 def search_page(request):
 
     numberOfItemInCart = Cart.objects.filter(profile = Profile.objects.get(username = request.user.username)).count()
